@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id     String @id @default(uuid())
+  nome   String
+  email  String
+  senha  String
+  create_at DateTime? @default(now())
+  update_at DateTime? @default(now())
+
+  @@map("usuarios")
+}
+
+model Filmes{
+  id         String @id @default(uuid())
+  nome       String
+  descricao  String
+  lancamento String
+  create_at DateTime? @default(now())
+  update_at DateTime? @default(now())
+
+categorias Categorias @relation(fields: [categoriaId], references: [id])
+categoriaId String
+
+@@map("filmes")
+}
+
+model Categorias{
+  id   String @id @default(uuid())
+  nome String
+  create_at DateTime? @default(now())
+  update_at DateTime? @default(now())
+
+  filmes Filmes[]
+
+  @@map("categorias")
+}
